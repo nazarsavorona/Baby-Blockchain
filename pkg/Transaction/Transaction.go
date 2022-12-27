@@ -1,8 +1,8 @@
 package Transaction
 
 import (
+	"baby-blockchain/pkg/Hash"
 	"baby-blockchain/pkg/Vote"
-	"crypto/sha256"
 	"fmt"
 	"log"
 	"strconv"
@@ -15,7 +15,7 @@ type Transaction struct {
 }
 
 func CreateTransaction(vote *Vote.Vote, nonce int) *Transaction {
-	transactionID := fmt.Sprintf("%x", sha256.Sum256([]byte(vote.ToString()+strconv.Itoa(nonce))))
+	transactionID := Hash.ToSHA256(vote.ToString() + strconv.Itoa(nonce))
 	return &Transaction{TransactionID: transactionID, Vote: vote, Nonce: nonce}
 }
 

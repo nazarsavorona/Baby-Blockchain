@@ -1,9 +1,9 @@
 package Account
 
 import (
+	"baby-blockchain/pkg/Hash"
 	"baby-blockchain/pkg/KeyPair"
 	"baby-blockchain/pkg/Signature"
-	"crypto/sha256"
 	"fmt"
 	"io"
 	"log"
@@ -16,7 +16,7 @@ type Account struct {
 
 func GenAccount(rand io.Reader) *Account {
 	keyPair := KeyPair.GenKeyPair(rand)
-	return &Account{AccountID: fmt.Sprintf("%x", sha256.Sum256([]byte(keyPair.ToString()))), KeyPair: keyPair}
+	return &Account{AccountID: Hash.ToSHA256(keyPair.ToString()), KeyPair: keyPair}
 }
 
 func (acc *Account) signData(message string) *Signature.Signature {
