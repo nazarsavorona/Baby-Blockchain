@@ -25,6 +25,6 @@ func (kp *KeyPair) ToString() string {
 	return fmt.Sprintf("{Private Key: %x; Public Key: %x}", kp.PrivateKey, kp.PublicKey)
 }
 
-func (kp *KeyPair) PrintKeyPair() {
+func (kp *KeyPair) Print() {
 	log.Println(kp.ToString())
 }

@@ -22,6 +22,6 @@ func (sig *Signature) ToString() string {
 	return fmt.Sprintf("Signature value: %x", sig.SignatureValue)
 }
 
-func (sig *Signature) PrintSignature() {
+func (sig *Signature) Print() {
 	log.Println(sig.ToString())
 }

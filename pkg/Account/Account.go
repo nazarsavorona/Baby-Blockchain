@@ -11,12 +11,12 @@ import (
 
 type Account struct {
 	AccountID string
-	KeyPair   KeyPair.KeyPair
+	KeyPair   *KeyPair.KeyPair
 }
 
 func GenAccount(rand io.Reader) *Account {
-	keyPair := *KeyPair.GenKeyPair(rand)
-	return &Account{AccountID: fmt.Sprint(sha256.Sum256([]byte(keyPair.ToString()))), KeyPair: keyPair}
+	keyPair := KeyPair.GenKeyPair(rand)
+	return &Account{AccountID: fmt.Sprintf("%x", sha256.Sum256([]byte(keyPair.ToString()))), KeyPair: keyPair}
 }
 
 func (acc *Account) signData(message string) *Signature.Signature {
@@ -24,7 +24,7 @@ func (acc *Account) signData(message string) *Signature.Signature {
 }
 
 func (acc *Account) ToString() string {
-	return fmt.Sprintf("{AccountID: %s; KeyPair: %v}", acc.AccountID, acc.KeyPair)
+	return fmt.Sprintf("{AccountID: %s; KeyPair: %s}", acc.AccountID, acc.KeyPair.ToString())
 }
 
 func (acc *Account) Print() {
