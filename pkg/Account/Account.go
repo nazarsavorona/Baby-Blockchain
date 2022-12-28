@@ -4,14 +4,14 @@ import (
 	"baby-blockchain/pkg/Hash"
 	"baby-blockchain/pkg/KeyPair"
 	"baby-blockchain/pkg/Signature"
-	"fmt"
+	"encoding/json"
 	"io"
 	"log"
 )
 
 type Account struct {
-	AccountID string
-	KeyPair   *KeyPair.KeyPair
+	AccountID string           `json:"account_id"`
+	KeyPair   *KeyPair.KeyPair `json:"key_pair"`
 }
 
 func GenAccount(rand io.Reader) *Account {
@@ -24,7 +24,8 @@ func (acc *Account) signData(message string) *Signature.Signature {
 }
 
 func (acc *Account) ToString() string {
-	return fmt.Sprintf("{AccountID: %s; KeyPair: %s}", acc.AccountID, acc.KeyPair.ToString())
+	str, _ := json.Marshal(acc)
+	return string(str)
 }
 
 func (acc *Account) Print() {

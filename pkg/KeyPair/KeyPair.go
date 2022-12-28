@@ -2,14 +2,14 @@ package KeyPair
 
 import (
 	"crypto/ed25519"
-	"fmt"
+	"encoding/json"
 	"io"
 	"log"
 )
 
 type KeyPair struct {
-	PrivateKey ed25519.PrivateKey
-	PublicKey  ed25519.PublicKey
+	PrivateKey ed25519.PrivateKey `json:"private_key"`
+	PublicKey  ed25519.PublicKey  `json:"public_key"`
 }
 
 func GenKeyPair(rand io.Reader) *KeyPair {
@@ -22,7 +22,8 @@ func GenKeyPair(rand io.Reader) *KeyPair {
 }
 
 func (kp *KeyPair) ToString() string {
-	return fmt.Sprintf("{Private Key: %x; Public Key: %x}", kp.PrivateKey, kp.PublicKey)
+	str, _ := json.Marshal(kp)
+	return string(str)
 }
 
 func (kp *KeyPair) Print() {

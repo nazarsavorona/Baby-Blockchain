@@ -2,12 +2,12 @@ package Signature
 
 import (
 	"crypto/ed25519"
-	"fmt"
+	"encoding/json"
 	"log"
 )
 
 type Signature struct {
-	SignatureValue []byte
+	SignatureValue []byte `json:"signature_value"`
 }
 
 func SignData(message string, privateKey ed25519.PrivateKey) *Signature {
@@ -19,7 +19,8 @@ func (sig *Signature) VerifySignature(message string, publicKey ed25519.PublicKe
 }
 
 func (sig *Signature) ToString() string {
-	return fmt.Sprintf("Signature value: %x", sig.SignatureValue)
+	str, _ := json.Marshal(sig)
+	return string(str)
 }
 
 func (sig *Signature) Print() {

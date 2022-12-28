@@ -4,28 +4,26 @@ import (
 	"baby-blockchain/pkg/Account"
 	"baby-blockchain/pkg/Signature"
 	"baby-blockchain/pkg/Voting"
+	"encoding/json"
 	"fmt"
 	"log"
 	"strconv"
 )
 
 type Vote struct {
-	sender    *Account.Account
-	voting    *Voting.Voting
-	vote      int
-	signature *Signature.Signature
+	Sender    *Account.Account     `json:"sender"`
+	Voting    *Voting.Voting       `json:"voting"`
+	Vote      int                  `json:"vote"`
+	Signature *Signature.Signature `json:"signature"`
 }
 
 func (v *Vote) verify() bool {
-	return v.signature.VerifySignature(v.sender.ToString()+v.voting.ToString()+strconv.Itoa(v.vote), v.sender.KeyPair.PublicKey)
+	return v.Signature.VerifySignature(v.Sender.ToString()+v.Voting.ToString()+strconv.Itoa(v.Vote), v.Sender.KeyPair.PublicKey)
 }
 
 func (v *Vote) ToString() string {
-	return fmt.Sprintf("{Vote: account %s, %s, vote %d, %s}",
-		v.sender.ToString(),
-		v.voting.ToString(),
-		v.vote,
-		v.signature.ToString())
+	str, _ := json.Marshal(v)
+	return string(str)
 }
 
 func (v *Vote) Print() {
@@ -39,10 +37,10 @@ func CreateVote(sender *Account.Account, voting *Voting.Voting, vote int) (*Vote
 
 	signature := Signature.SignData(sender.ToString()+voting.ToString()+strconv.Itoa(vote), sender.KeyPair.PrivateKey)
 
-	return &Vote{sender: sender,
-		voting:    voting,
-		vote:      vote,
-		signature: signature}, nil
+	return &Vote{Sender: sender,
+		Voting:    voting,
+		Vote:      vote,
+		Signature: signature}, nil
 }
 
 func VerifyVote(vote *Vote) bool {
